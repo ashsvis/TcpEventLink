@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TcpEventServer
+namespace TcpEventCommon
 {
     /// <summary>
     /// Класс для передачи десериализированного контейнера при 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
 using System.ServiceProcess;
+using TcpEventCommon;
 
 namespace TcpEventServer
 {

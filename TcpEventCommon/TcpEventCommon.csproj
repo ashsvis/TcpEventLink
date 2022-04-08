@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B1638DCC-7C8A-4910-97D6-F81AF15F3C14}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>TcpEventServer</RootNamespace>
-    <AssemblyName>TcpEventServer</AssemblyName>
+    <ProjectGuid>{32E8F75C-5ED8-4618-BED6-A5589CE41E81}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TcpEventCommon</RootNamespace>
+    <AssemblyName>TcpEventCommon</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,9 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,36 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ProjectInstaller.designer.cs">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TcpEventServerProgram.cs" />
+    <Compile Include="AnswerData.cs" />
+    <Compile Include="DataKind.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="ObjectCloner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TcpTuning.cs" />
+    <Compile Include="ReceiveEventArgs.cs" />
+    <Compile Include="RequestData.cs" />
+    <Compile Include="SendInfo.cs" />
+    <Compile Include="TcpClientData.cs" />
+    <Compile Include="TcpModule.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="UserStatus.cs" />
-    <Compile Include="WinService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="WinService.designer.cs">
-      <DependentUpon>WinService.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ProjectInstaller.resx">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TcpEventCommon\TcpEventCommon.csproj">
-      <Project>{32e8f75c-5ed8-4618-bed6-a5589ce41e81}</Project>
-      <Name>TcpEventCommon</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

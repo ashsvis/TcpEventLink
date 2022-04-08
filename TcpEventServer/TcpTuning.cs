@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using TcpEventCommon;
 
 namespace TcpEventServer
 {

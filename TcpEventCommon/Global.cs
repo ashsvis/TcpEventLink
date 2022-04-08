@@ -1,4 +1,4 @@
-﻿namespace TcpEventServer
+﻿namespace TcpEventCommon
 {
     public static class Global
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TcpEventServer
+namespace TcpEventCommon
 {
     /// <summary>
     /// Класс для отправки текстового сообщения и 

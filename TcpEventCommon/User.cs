@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TcpEventServer
+namespace TcpEventCommon
 {
     [Serializable]
     public class User

@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace TcpEventServer
+namespace TcpEventCommon
 {
     /// <summary>
     /// Класс способный выступать в роли сервера или клиента в TCP соединении.
@@ -178,7 +178,7 @@ namespace TcpEventServer
             return byteheader;
         }
 
-        private void SendNetworkData(string key, string value)
+        public void SendNetworkData(string key, string value)
         {
             // Состав отсылаемого универсального сообщения
             // 1. Заголовок о следующим объектом класса подробной информации дальнейших байтов
@@ -265,13 +265,12 @@ namespace TcpEventServer
                 // Активация события успешного подключения клиента
                 if (Accept != null)
                 {
-                    Accept.BeginInvoke(TcpClient /*this*/, null, null);
+                    Accept.BeginInvoke(TcpClient, null, null);
                 }
             }
             catch
             {
                 // Обработка исключительных ошибок возникших при акцептирования клиента.
-                //SoundError();
             }
         }
 

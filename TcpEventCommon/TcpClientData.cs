@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace TcpEventServer
+namespace TcpEventCommon
 {
     /// <summary>
     /// Класс для организации непрерывного извлечения сетевых данных,
