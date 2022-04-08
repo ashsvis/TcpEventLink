@@ -11,6 +11,17 @@ namespace TcpEventClient
     public static class Client
     {
         public static IPEndPoint ServerEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), Global.SERVERTCPPORT);
+
+        public static void Connect(string ipserver)
+        {
+            tcpModule.ConnectClient(ipserver);
+        }
+
+        public static void Disconnect()
+        {
+            tcpModule.DisconnectClient();
+        }
+
         public static int SendTimeout = 500;
         public static int ReceiveTimeout = 500;
 

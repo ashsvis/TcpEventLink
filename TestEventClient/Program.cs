@@ -11,6 +11,7 @@ namespace TestEventClient
     {
         static void Main(string[] args)
         {
+            Client.Connect("127.0.0.1");
             Client.Send("1", "2");
             Client.OnReceive += (o, e) => 
             {
@@ -18,6 +19,7 @@ namespace TestEventClient
             };
 
             Console.ReadKey();
+            Client.Disconnect();
         }
     }
 }
