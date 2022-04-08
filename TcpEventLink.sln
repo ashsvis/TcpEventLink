@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpEventClient", "TcpEventC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpEventCommon", "TcpEventCommon\TcpEventCommon.csproj", "{32E8F75C-5ED8-4618-BED6-A5589CE41E81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEventClient", "TestEventClient\TestEventClient.csproj", "{696C3ABE-CAE6-403B-B2C9-221ED5C7081E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{32E8F75C-5ED8-4618-BED6-A5589CE41E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32E8F75C-5ED8-4618-BED6-A5589CE41E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32E8F75C-5ED8-4618-BED6-A5589CE41E81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{696C3ABE-CAE6-403B-B2C9-221ED5C7081E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{696C3ABE-CAE6-403B-B2C9-221ED5C7081E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{696C3ABE-CAE6-403B-B2C9-221ED5C7081E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{696C3ABE-CAE6-403B-B2C9-221ED5C7081E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

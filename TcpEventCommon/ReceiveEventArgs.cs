@@ -2,6 +2,8 @@
 
 namespace TcpEventCommon
 {
+    public delegate void ReceiveEventHandler(object sender, ReceiveEventArgs e);
+
     /// <summary>
     /// Класс для передачи десериализированного контейнера при 
     /// возникновении события получения сетевых данных.

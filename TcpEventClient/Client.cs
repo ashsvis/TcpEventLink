@@ -47,6 +47,21 @@ namespace TcpEventClient
         {
             var key = e.SendInfo.Key;
             var value = e.SendInfo.Value;
+            onReceive?.Invoke(sender, e);
+        }
+
+        private static event ReceiveEventHandler onReceive;
+
+        public static event ReceiveEventHandler OnReceive
+        {
+            add
+            {
+                onReceive += value;
+            }
+            remove
+            {
+                onReceive -= value;
+            }
         }
 
         private static void Tcpmodule_Disconnected(object sender, string result)
