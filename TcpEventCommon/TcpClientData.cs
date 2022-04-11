@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 
 namespace TcpEventCommon
 {
@@ -9,6 +10,8 @@ namespace TcpEventCommon
     /// </summary>
     public class TcpClientData
     {
+        public Guid clientID = Guid.Empty;
+
         public TcpClient tcpClient = new TcpClient();
 
         // Буфер для чтения и записи данных сетевого потока

@@ -9,6 +9,7 @@ namespace TcpEventCommon
     [Serializable]
     public class SendInfo
     {
+        public Guid ClientID = Guid.Empty;
         public string Key;
         public string Value;
     }

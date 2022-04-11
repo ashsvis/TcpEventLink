@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpEventServer", "TcpEventServer\TcpEventServer.csproj", "{B1638DCC-7C8A-4910-97D6-F81AF15F3C14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpEventClient", "TcpEventClient\TcpEventClient.csproj", "{5AA1890B-75B2-4C11-80AE-1371948D4958}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpEventCommon", "TcpEventCommon\TcpEventCommon.csproj", "{32E8F75C-5ED8-4618-BED6-A5589CE41E81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEventClient", "TestEventClient\TestEventClient.csproj", "{696C3ABE-CAE6-403B-B2C9-221ED5C7081E}"
@@ -21,10 +19,6 @@ Global
 		{B1638DCC-7C8A-4910-97D6-F81AF15F3C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1638DCC-7C8A-4910-97D6-F81AF15F3C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1638DCC-7C8A-4910-97D6-F81AF15F3C14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5AA1890B-75B2-4C11-80AE-1371948D4958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AA1890B-75B2-4C11-80AE-1371948D4958}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AA1890B-75B2-4C11-80AE-1371948D4958}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AA1890B-75B2-4C11-80AE-1371948D4958}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32E8F75C-5ED8-4618-BED6-A5589CE41E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32E8F75C-5ED8-4618-BED6-A5589CE41E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32E8F75C-5ED8-4618-BED6-A5589CE41E81}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -10,12 +10,11 @@ using System.Text;
 namespace TcpEventCommon
 {
     /// <summary>
-    /// Класс способный выступать в роли сервера или клиента в TCP соединении.
+    /// Класс, способный выступать в роли сервера или клиента в TCP соединении.
     /// Отправляет и получает по сети файлы и текстовые сообщения.
     /// </summary>
     public class TcpModule
     {
-
         #region Определение событий сетевого модуля
 
         // Типы делегатов для обработки событий в паре с соответствующим объектом события.
@@ -178,7 +177,7 @@ namespace TcpEventCommon
             return byteheader;
         }
 
-        public void SendNetworkData(string key, string value)
+        public void SendData(Guid clientId, string key, string value)
         {
             // Состав отсылаемого универсального сообщения
             // 1. Заголовок о следующим объектом класса подробной информации дальнейших байтов
@@ -187,6 +186,7 @@ namespace TcpEventCommon
 
             var si = new SendInfo
             {
+                ClientID = clientId,
                 Key = key,
                 Value = value
             };
@@ -223,7 +223,6 @@ namespace TcpEventCommon
             // Подтверждение успешной отправки
         }
 
-
         /// <summary>
         /// Универсальный метод останавливающий работу сервера и закрывающий все сокеты
         /// вызывается в событии закрытия родительской формы.
@@ -241,7 +240,7 @@ namespace TcpEventCommon
 
 
         /// <summary>
-        /// Обратный метод завершения принятия клиентов
+        /// Обратный метод завершения принятия клиентов (на стороне сервера)
         /// </summary>
         public void AcceptCallback(IAsyncResult ar)
         {
@@ -250,8 +249,7 @@ namespace TcpEventCommon
             TcpListener listener = (TcpListener)ar.AsyncState;
             try
             {
-                TcpClient = new TcpClientData();
-                TcpClient.tcpClient = listener.EndAcceptTcpClient(ar);
+                TcpClient = new TcpClientData { tcpClient = listener.EndAcceptTcpClient(ar), clientID = Guid.NewGuid() };
 
                 // Немедленно запускаем асинхронный метод извлечения сетевых данных
                 // для акцептированного TCP клиента
@@ -266,6 +264,36 @@ namespace TcpEventCommon
                 if (Accept != null)
                 {
                     Accept.BeginInvoke(TcpClient, null, null);
+
+                    //ns.Write()
+                    var si = new SendInfo
+                    {
+                        ClientID = TcpClient.clientID,
+                        Key = "ClientID",
+                        Value = $"{TcpClient.clientID}"
+                    };
+                    var bf = new BinaryFormatter();
+                    var ms = new MemoryStream();
+                    bf.Serialize(ms, si);
+                    ms.Position = 0;
+                    byte[] infobuffer = new byte[ms.Length];
+                    int r = ms.Read(infobuffer, 0, infobuffer.Length);
+                    ms.Close();
+
+                    byte[] header = GetHeader(infobuffer.Length);
+                    byte[] total = new byte[header.Length + infobuffer.Length];
+
+                    Buffer.BlockCopy(header, 0, total, 0, header.Length);
+                    Buffer.BlockCopy(infobuffer, 0, total, header.Length, infobuffer.Length);
+
+                    ns.Write(total, 0, total.Length);
+
+                    // Обнулим все ссылки на многобайтные объекты и попробуем очистить память
+                    header = null;
+                    infobuffer = null;
+                    total = null;
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
             }
             catch
@@ -274,9 +302,8 @@ namespace TcpEventCommon
             }
         }
 
-
         /// <summary>
-        /// Метод вызываемый при завершении попытки поключения клиента
+        /// Метод вызываемый на стороне клиента при завершении попытки поключения клиента
         /// </summary>
         public void ConnectCallback(IAsyncResult ar)
         {
@@ -351,7 +378,7 @@ namespace TcpEventCommon
                         Disconnected.BeginInvoke(myTcpClient, "Клиент отключился.", null, null);
                 }
             }
-            catch (Exception)
+            catch (IOException)
             {
                 DeleteClient(myTcpClient);
                 // Событие клиент отключился

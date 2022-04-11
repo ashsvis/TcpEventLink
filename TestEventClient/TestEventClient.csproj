@@ -42,17 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="TestEventProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TcpEventClient\TcpEventClient.csproj">
-      <Project>{5aa1890b-75b2-4c11-80ae-1371948d4958}</Project>
-      <Name>TcpEventClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TcpEventCommon\TcpEventCommon.csproj">
       <Project>{32E8F75C-5ED8-4618-BED6-A5589CE41E81}</Project>
       <Name>TcpEventCommon</Name>

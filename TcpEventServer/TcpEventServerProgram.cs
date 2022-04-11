@@ -61,7 +61,7 @@ namespace TcpEventServer
             if (Environment.UserInteractive)
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine("Клиент подключился");
+                Console.WriteLine("Клиент подключился.");
             }
         }
 
