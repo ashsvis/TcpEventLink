@@ -69,7 +69,7 @@ namespace TcpEventCommon
         /// <summary>
         /// Режим работы TCP модуля
         /// </summary>
-        public Mode modeNetwork;
+        public Mode ModeNetwork;
 
         #endregion
 
@@ -82,14 +82,14 @@ namespace TcpEventCommon
         /// </summary>
         public void StartServer()
         {
-            if (modeNetwork == Mode.Indeterminately)
+            if (ModeNetwork == Mode.Indeterminately)
             {
                 try
                 {
                     tcpListener = new TcpListener(IPAddress.Any, Global.SERVERTCPPORT);
                     tcpListener.Start();
                     tcpListener.BeginAcceptTcpClient(AcceptCallback, tcpListener);
-                    modeNetwork = Mode.Server;
+                    ModeNetwork = Mode.Server;
                 }
                 catch
                 {
@@ -104,9 +104,9 @@ namespace TcpEventCommon
         /// </summary>
         public void StopServer()
         {
-            if (modeNetwork == Mode.Server)
+            if (ModeNetwork == Mode.Server)
             {
-                modeNetwork = Mode.Indeterminately;
+                ModeNetwork = Mode.Indeterminately;
                 tcpListener.Stop();
                 tcpListener = null;
                 DeleteClient(TcpClient);
@@ -120,12 +120,24 @@ namespace TcpEventCommon
         /// <param name="ipserver">IP адрес сервера</param>
         public void ConnectClient(string ipserver)
         {
-            if (modeNetwork == Mode.Indeterminately)
+            if (ModeNetwork == Mode.Indeterminately)
             {
                 TcpClient = new TcpClientData();
                 TcpClient.tcpClient.BeginConnect(IPAddress.Parse(ipserver), Global.SERVERTCPPORT, new AsyncCallback(ConnectCallback), TcpClient);
-                modeNetwork = Mode.Client;
+                ModeNetwork = Mode.Client;
             }
+        }
+
+        /// <summary>
+        /// Возвращаем UserID последнего подключившегося клиента
+        /// </summary>
+        /// <returns></returns>
+        public Guid GetLastClientId()
+        {
+            var client = TcpClient;
+            if (ModeNetwork == Mode.Client && client != null)
+                return client.UserID;
+            return Guid.Empty;
         }
 
 
@@ -134,9 +146,9 @@ namespace TcpEventCommon
         /// </summary>
         public void DisconnectClient()
         {
-            if (modeNetwork == Mode.Client)
+            if (ModeNetwork == Mode.Client)
             {
-                modeNetwork = Mode.Indeterminately;
+                ModeNetwork = Mode.Indeterminately;
                 DeleteClient(TcpClient);
             }
         }
@@ -177,7 +189,7 @@ namespace TcpEventCommon
             return byteheader;
         }
 
-        public void SendData(Guid clientId, string key, string value)
+        public void SendData(string key, string value)
         {
             // Состав отсылаемого универсального сообщения
             // 1. Заголовок о следующим объектом класса подробной информации дальнейших байтов
@@ -186,7 +198,6 @@ namespace TcpEventCommon
 
             var si = new SendInfo
             {
-                ClientID = clientId,
                 Key = key,
                 Value = value
             };
@@ -244,12 +255,12 @@ namespace TcpEventCommon
         /// </summary>
         public void AcceptCallback(IAsyncResult ar)
         {
-            if (modeNetwork == Mode.Indeterminately) return;
+            if (ModeNetwork == Mode.Indeterminately) return;
 
             TcpListener listener = (TcpListener)ar.AsyncState;
             try
             {
-                TcpClient = new TcpClientData { tcpClient = listener.EndAcceptTcpClient(ar), clientID = Guid.NewGuid() };
+                TcpClient = new TcpClientData { tcpClient = listener.EndAcceptTcpClient(ar) };
 
                 // Немедленно запускаем асинхронный метод извлечения сетевых данных
                 // для акцептированного TCP клиента
@@ -266,34 +277,34 @@ namespace TcpEventCommon
                     Accept.BeginInvoke(TcpClient, null, null);
 
                     //ns.Write()
-                    var si = new SendInfo
-                    {
-                        ClientID = TcpClient.clientID,
-                        Key = "ClientID",
-                        Value = $"{TcpClient.clientID}"
-                    };
-                    var bf = new BinaryFormatter();
-                    var ms = new MemoryStream();
-                    bf.Serialize(ms, si);
-                    ms.Position = 0;
-                    byte[] infobuffer = new byte[ms.Length];
-                    int r = ms.Read(infobuffer, 0, infobuffer.Length);
-                    ms.Close();
+                    //var si = new SendInfo
+                    //{
+                    //    UserId = TcpClient.UserID,
+                    //    Key = "UserId",
+                    //    Value = $"{TcpClient.UserID}"
+                    //};
+                    //var bf = new BinaryFormatter();
+                    //var ms = new MemoryStream();
+                    //bf.Serialize(ms, si);
+                    //ms.Position = 0;
+                    //byte[] infobuffer = new byte[ms.Length];
+                    //int r = ms.Read(infobuffer, 0, infobuffer.Length);
+                    //ms.Close();
 
-                    byte[] header = GetHeader(infobuffer.Length);
-                    byte[] total = new byte[header.Length + infobuffer.Length];
+                    //byte[] header = GetHeader(infobuffer.Length);
+                    //byte[] total = new byte[header.Length + infobuffer.Length];
 
-                    Buffer.BlockCopy(header, 0, total, 0, header.Length);
-                    Buffer.BlockCopy(infobuffer, 0, total, header.Length, infobuffer.Length);
+                    //Buffer.BlockCopy(header, 0, total, 0, header.Length);
+                    //Buffer.BlockCopy(infobuffer, 0, total, header.Length, infobuffer.Length);
 
-                    ns.Write(total, 0, total.Length);
+                    //ns.Write(total, 0, total.Length);
 
-                    // Обнулим все ссылки на многобайтные объекты и попробуем очистить память
-                    header = null;
-                    infobuffer = null;
-                    total = null;
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
+                    //// Обнулим все ссылки на многобайтные объекты и попробуем очистить память
+                    //header = null;
+                    //infobuffer = null;
+                    //total = null;
+                    //GC.Collect();
+                    //GC.WaitForPendingFinalizers();
                 }
             }
             catch
@@ -339,7 +350,7 @@ namespace TcpEventCommon
 
         public void ReadCallback(IAsyncResult ar)
         {
-            if (modeNetwork == Mode.Indeterminately) return;
+            if (ModeNetwork == Mode.Indeterminately) return;
 
             TcpClientData myTcpClient = (TcpClientData)ar.AsyncState;
 

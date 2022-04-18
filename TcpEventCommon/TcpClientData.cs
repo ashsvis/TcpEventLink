@@ -10,7 +10,7 @@ namespace TcpEventCommon
     /// </summary>
     public class TcpClientData
     {
-        public Guid clientID = Guid.Empty;
+        public Guid UserID = Guid.NewGuid();
 
         public TcpClient tcpClient = new TcpClient();
 

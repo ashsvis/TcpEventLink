@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +13,7 @@ namespace TcpEventServer
     {
         static TcpModule tcpmodule;
 
-        static readonly Hashtable clients = new Hashtable();
+        static readonly Dictionary<Guid, TcpClientData> clients = new Dictionary<Guid, TcpClientData>();
 
         static void Main(string[] args)
         {
@@ -48,34 +48,47 @@ namespace TcpEventServer
             tcpmodule.StopServer();
         }
 
+        /// <summary>
+        /// Получение сервером сообщения от клиента и раздача этого сообщения всем подключённым клиентам
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         static void TcpModule_Receive(object sender, ReceiveEventArgs e)
         {
             if (Environment.UserInteractive)
                 Console.WriteLine($"{e.SendInfo.Key}={e.SendInfo.Value}");
+            // пересылка принятого сообщения всем клиентам
+            tcpmodule.SendData(e.SendInfo.Key, e.SendInfo.Value);
         }
 
+        /// <summary>
+        /// К серверу подключился новый клиент
+        /// </summary>
+        /// <param name="sender">TcpClientData клиент</param>
         private static void TcpModule_Accept(object sender)
         {
-            clients[sender] = new User();
-
-            if (Environment.UserInteractive)
+            if (sender is TcpClientData client)
             {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine("Клиент подключился.");
+                clients.Add(client.UserID, client);
+                if (Environment.UserInteractive)
+                {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.WriteLine("Клиент подключился.");
+                }
             }
         }
 
         private static void Tcpmodule_Disconnected(object sender, string result)
         {
-            var user = (User)clients[sender];
-            if (user != null)
+            if (sender is TcpClientData client)
             {
-                clients.Remove(sender);
-            }
-            if (Environment.UserInteractive)
-            {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(result);
+                if (clients.ContainsKey(client.UserID))
+                    clients.Remove(client.UserID);
+                if (Environment.UserInteractive)
+                {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.WriteLine(result);
+                }
             }
         }
 
