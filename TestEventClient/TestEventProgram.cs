@@ -69,6 +69,7 @@ namespace TestEventClient
                 // для всех таблиц из набора DataSet
                 foreach (var tableName in tableNames)
                 {
+                    Console.WriteLine(tableName);
                     var table = dataSet.Tables[tableName];
                     // для текущей таблицы получаем массив имён столбцов
                     var columnNames = table.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
