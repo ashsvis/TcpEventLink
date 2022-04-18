@@ -75,6 +75,8 @@ namespace TcpEventServer
                     Console.ForegroundColor = ConsoleColor.Gray;
                     Console.WriteLine("Клиент подключился.");
                 }
+                // тестирование рассылки сервером как инициатора рассылки
+                tcpmodule.SendData("Количество клиентов:", clients.Count.ToString());
             }
         }
 
@@ -83,7 +85,11 @@ namespace TcpEventServer
             if (sender is TcpClientData client)
             {
                 if (clients.ContainsKey(client.UserID))
+                {
                     clients.Remove(client.UserID);
+                    // тестирование рассылки сервером как инициатора рассылки
+                    tcpmodule.SendData("Количество клиентов:", clients.Count.ToString());
+                }
                 if (Environment.UserInteractive)
                 {
                     Console.ForegroundColor = ConsoleColor.Gray;

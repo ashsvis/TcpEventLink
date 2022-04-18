@@ -30,7 +30,8 @@ namespace TestEventClient
         private static void Tcpmodule_Receive(object sender, ReceiveEventArgs e)
         {
             if (sender is TcpClientData client)
-                Console.WriteLine($"{client.UserID}: {e.SendInfo.Key} = {e.SendInfo.Value}"); 
+                Console.WriteLine($"{e.SendInfo.Key} = {e.SendInfo.Value}");
+            //Console.WriteLine($"{client.UserID}: {e.SendInfo.Key} = {e.SendInfo.Value}"); 
            
         }
 
