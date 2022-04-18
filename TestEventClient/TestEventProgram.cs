@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using TcpEventCommon;
@@ -53,16 +54,32 @@ namespace TestEventClient
             return table;
         }
 
+        /// <summary>
+        /// Получение клиентом сообщения от сервера
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void Tcpmodule_Receive(object sender, ReceiveEventArgs e)
         {
             if (sender is TcpClientData client)
             {
+                // для всех таблиц из набора DataSet
                 foreach (var table in e.SendInfo.DataSet.Tables.Cast<DataTable>())
                 {
-                    Console.WriteLine(string.Join("\t", table.Columns.Cast<DataColumn>().Select(column => column.ColumnName)));
+                    // для текущей таблицы получаем массив имён столбцов
+                    var columnNames = table.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+                    // выводим сцепленные через табуляцию значения
+                    Console.WriteLine(string.Join("\t", columnNames));
+                    // перебираем все строки текущей таблицы
                     foreach (var row in table.Rows.Cast<DataRow>())
                     {
-                        Console.WriteLine(string.Join("\t", row.ItemArray.Select(item => $"{item}")));
+                        // для текущей строки таблицы
+                        var columnValues = new List<string>();
+                        // добавляем текстовое представление значения в список columnValues
+                        foreach (var columnName in columnNames)
+                            columnValues.Add($"{row[columnName]}");
+                        // выводим сцепленные через табуляцию значения
+                        Console.WriteLine(string.Join("\t", columnValues));
                     }
 
                     Console.WriteLine();
