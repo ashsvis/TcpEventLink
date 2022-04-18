@@ -56,9 +56,11 @@ namespace TcpEventServer
         static void TcpModule_Receive(object sender, ReceiveEventArgs e)
         {
             if (Environment.UserInteractive)
-                Console.WriteLine($"{e.SendInfo.Key}={e.SendInfo.Value}");
+            {
+                //Console.WriteLine($"{e.SendInfo.Key}={e.SendInfo.Value}");
+            }
             // пересылка принятого сообщения всем клиентам
-            tcpmodule.SendData(e.SendInfo.Key, e.SendInfo.Value);
+            tcpmodule.SendData(e.SendInfo.DataSet);
         }
 
         /// <summary>
@@ -76,7 +78,7 @@ namespace TcpEventServer
                     Console.WriteLine("Клиент подключился.");
                 }
                 // тестирование рассылки сервером как инициатора рассылки
-                tcpmodule.SendData("Количество клиентов:", clients.Count.ToString());
+                //tcpmodule.SendData("Количество клиентов:", clients.Count.ToString());
             }
         }
 
@@ -88,7 +90,7 @@ namespace TcpEventServer
                 {
                     clients.Remove(client.UserID);
                     // тестирование рассылки сервером как инициатора рассылки
-                    tcpmodule.SendData("Количество клиентов:", clients.Count.ToString());
+                    //tcpmodule.SendData("Количество клиентов:", clients.Count.ToString());
                 }
                 if (Environment.UserInteractive)
                 {

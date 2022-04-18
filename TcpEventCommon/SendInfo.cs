@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace TcpEventCommon
 {
@@ -9,7 +10,6 @@ namespace TcpEventCommon
     [Serializable]
     public class SendInfo
     {
-        public string Key;
-        public string Value;
+        public DataSet DataSet { get; set; } = new DataSet("Replication");
     }
 }

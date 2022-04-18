@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -189,18 +190,14 @@ namespace TcpEventCommon
             return byteheader;
         }
 
-        public void SendData(string key, string value)
+        public void SendData(DataSet dataSet)
         {
             // Состав отсылаемого универсального сообщения
             // 1. Заголовок о следующим объектом класса подробной информации дальнейших байтов
             // 2. Объект класса подробной информации о следующих байтах
             // 3. Байты непосредственно готовых к записи в файл или для чего-то иного.
 
-            var si = new SendInfo
-            {
-                Key = key,
-                Value = value
-            };
+            var si = new SendInfo() { DataSet = dataSet };
 
             var bf = new BinaryFormatter();
             var ms = new MemoryStream();
@@ -275,36 +272,6 @@ namespace TcpEventCommon
                 if (Accept != null)
                 {
                     Accept.BeginInvoke(TcpClient, null, null);
-
-                    //ns.Write()
-                    //var si = new SendInfo
-                    //{
-                    //    UserId = TcpClient.UserID,
-                    //    Key = "UserId",
-                    //    Value = $"{TcpClient.UserID}"
-                    //};
-                    //var bf = new BinaryFormatter();
-                    //var ms = new MemoryStream();
-                    //bf.Serialize(ms, si);
-                    //ms.Position = 0;
-                    //byte[] infobuffer = new byte[ms.Length];
-                    //int r = ms.Read(infobuffer, 0, infobuffer.Length);
-                    //ms.Close();
-
-                    //byte[] header = GetHeader(infobuffer.Length);
-                    //byte[] total = new byte[header.Length + infobuffer.Length];
-
-                    //Buffer.BlockCopy(header, 0, total, 0, header.Length);
-                    //Buffer.BlockCopy(infobuffer, 0, total, header.Length, infobuffer.Length);
-
-                    //ns.Write(total, 0, total.Length);
-
-                    //// Обнулим все ссылки на многобайтные объекты и попробуем очистить память
-                    //header = null;
-                    //infobuffer = null;
-                    //total = null;
-                    //GC.Collect();
-                    //GC.WaitForPendingFinalizers();
                 }
             }
             catch
