@@ -63,9 +63,13 @@ namespace TestEventClient
         {
             if (sender is TcpClientData client)
             {
+                // для загруженного набора данных получаем массив имён таблиц
+                var dataSet = e.SendInfo.DataSet;
+                var tableNames = dataSet.Tables.Cast<DataTable>().Select(item => item.TableName);
                 // для всех таблиц из набора DataSet
-                foreach (var table in e.SendInfo.DataSet.Tables.Cast<DataTable>())
+                foreach (var tableName in tableNames)
                 {
+                    var table = dataSet.Tables[tableName];
                     // для текущей таблицы получаем массив имён столбцов
                     var columnNames = table.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
                     // выводим сцепленные через табуляцию значения
